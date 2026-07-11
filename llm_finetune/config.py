@@ -1,0 +1,8 @@
+import os
+
+_DEFAULT_MODEL_NAME = "Qwen/Qwen2.5-Coder-7B-Instruct"
+MODEL_NAME = os.environ.get("MODEL_NAME", _DEFAULT_MODEL_NAME)
+
+LORA_R = 8
+LORA_ALPHA = 16
+LORA_DROPOUT = 0.05
