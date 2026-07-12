@@ -18,3 +18,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["llm_finetune"]
+
+
+[dependency-groups]
+plot = [
+    "matplotlib>=3.9.0"
+]
