@@ -53,12 +53,6 @@ def _parse_args():
         help="Number of steps between logging.",
     )
     parser.add_argument(
-        "--save-steps",
-        type=int,
-        default=10,
-        help="Number of steps between saving the model.",
-    )
-    parser.add_argument(
         "--eval-steps",
         type=int,
         default=10,
@@ -74,9 +68,14 @@ def main(args):
         per_device_train_batch_size=args.batch_size,
         learning_rate=5e-5,
         logging_steps=args.logging_steps,
-        save_steps=args.save_steps,
         eval_strategy="steps",
         eval_steps=args.eval_steps,
+        save_strategy="steps",
+        save_steps=args.eval_steps,
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
+        save_total_limit=1,
         max_length=MAX_SEQ_LENGTH,
     )
 
