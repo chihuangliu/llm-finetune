@@ -24,3 +24,8 @@ packages = ["llm_finetune"]
 plot = [
     "matplotlib>=3.9.0"
 ]
+gguf = [
+    "gguf>=0.1.0",
+    "sentencepiece>=0.1.98,<0.3.0",
+    "protobuf>=4.21.0,<5.0.0",
+]
