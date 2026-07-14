@@ -13,8 +13,12 @@ def apply_chat_template(batch):
 
 
 def get_dataset(
-    split: Literal["train", "val", "test"], dir: Path = default_dir
+    split: Literal["train", "val", "test"],
+    dir: Path = default_dir,
+    apply_chat_template: bool = False,
 ) -> HFDataset:
     ds = load_dataset("json", data_files=str(dir / f"{split}.jsonl"), split="train")
+    if not apply_chat_template:
+        return ds
 
     return ds.map(apply_chat_template, batched=True)

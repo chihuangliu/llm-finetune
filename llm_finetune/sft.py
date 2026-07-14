@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from llm_finetune.config import (
     MODEL_NAME,
     LORA_R,
@@ -11,7 +13,9 @@ from trl import SFTTrainer, SFTConfig
 from llm_finetune.data import get_dataset
 from llm_finetune.utils import tokenizer, device
 from argparse import ArgumentParser
+from llm_finetune.utils import get_datetime, git_commit
 
+DEFAULT_OUTPUT_DIR = Path(__file__).parent.parent / "sft_output"
 
 base_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME).to(device)
 lora_config = LoraConfig(
@@ -31,7 +35,7 @@ def _parse_args():
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="././sft_output",
+        default=str(DEFAULT_OUTPUT_DIR) + "/" + get_datetime() + "-" + git_commit()[:5],
         help="Directory to save the model.",
     )
     parser.add_argument(
@@ -77,6 +81,7 @@ def main(args):
         greater_is_better=False,
         save_total_limit=1,
         max_length=MAX_SEQ_LENGTH,
+        assistant_only_loss=True,
     )
 
     trainer = SFTTrainer(
