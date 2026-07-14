@@ -3,6 +3,7 @@ SHELL := /bin/bash
 VENV := .venv-gguf
 ACTIVATE := source $(VENV)/bin/activate
 CONVERT_SCRIPT := third_party/llama.cpp/convert_hf_to_gguf.py
+MODELFILE_TEMPLATE := templates/Modelfile
 
 # Files that merge.py does not save but are needed for inference / conversion.
 TOKENIZER_FILES := tokenizer.json tokenizer_config.json chat_template.jinja
@@ -53,3 +54,14 @@ to-gguf:
 		--outfile "$(MODEL_PATH)/model-f16.gguf" \
 		--outtype f16
 	@echo ">> GGUF written to $(MODEL_PATH)/model-f16.gguf"
+	@$(MAKE) modelfile MODEL_PATH="$(MODEL_PATH)"
+
+.PHONY: modelfile
+modelfile:
+	@if [ -z "$(MODEL_PATH)" ]; then \
+		echo "Usage: make modelfile MODEL_PATH=<hf-model-dir>"; \
+		exit 1; \
+	fi
+	@echo ">> Writing Modelfile into $(MODEL_PATH)..."
+	@cp "$(MODELFILE_TEMPLATE)" "$(MODEL_PATH)/Modelfile"
+	@echo ">> Modelfile written to $(MODEL_PATH)/Modelfile"
